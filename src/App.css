@@ -1,12 +1,26 @@
+html{overflow-y: scroll; height:100% }
+
+body{
+  height: 100%;
+  margin-top: 0;
+}
+
 .App {
   text-align: center;
+  height:100%
+}
+
+#root{
+  height: 100%;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
-
+.left{
+ text-align: start;
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

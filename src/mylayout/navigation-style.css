@@ -1,0 +1,115 @@
+.navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    height: 70px;
+    width: 100%; 
+    position: fixed; 
+    z-index: 1;
+    top: 0; 
+    left: 0;
+    background-color: #424242; 
+    color:#fff;
+    overflow-x: wrap; 
+    padding: 20px;
+  
+  }
+
+  .navbarcorner {
+    display: flex;
+    flex-direction: row;
+    justify-content:left;
+    height: 70px;
+    width: 100%; 
+    position: fixed; 
+    z-index: 1;
+    top: 0; 
+    left: 0;
+    background-color:#424242; 
+    color:#fff;
+    overflow-x: wrap; 
+    padding: 30px;
+  
+  }
+  
+  /* Navbar links */
+  .navbar a, .navbarcorner button, .navbarcorner a {
+    border:none;
+    margin:10px 20px;
+    text-align: center;
+    padding: 12px;
+    color: white;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  
+  /* Navbar links on mouse-over */
+  .navbar a:hover, .navbarcorner button:hover {
+    background-color:#212121;
+  }
+
+  /* Current/active navbar link */
+  .active {
+    background-color:#757575;
+  }
+
+  .inactive {
+    background-color:#424242;
+  }
+  
+  /* Add responsiveness - will automatically display the navbar vertically instead of horizontally on screens less than 500 pixels */
+  @media screen and (max-width: 1000px) {
+    .navbar {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      height: auto;
+      width: 100%; 
+      position: fixed; 
+      z-index: 1;
+      top: 0; 
+      left: 0;
+      background-color: #424242; 
+      color:#fff;
+      overflow-x: wrap; 
+      padding-top: 10px;
+      padding-bottom: 10px
+    
+    }
+
+    .navbarcorner {
+      display: flex;
+      flex-direction: row;
+      justify-content: left;
+      height: 60px;
+      width: 100%; 
+      position: fixed; 
+      z-index: 1;
+      top: 0; 
+      left: 0;
+      background-color: #424242; 
+      color:#fff;
+      overflow-x: hidden; 
+      padding-top: 15px;
+      padding-bottom: 10px
+    
+    }
+    .navbar a {
+      margin:10px 20px;
+      text-align: center;
+      padding: 3px;
+      color: white;
+      text-decoration: none;
+      font-size: 17px;
+    }
+
+    .navbarcorner button, .navbarcorner a {
+      margin:10px 20px;
+      text-align: center;
+      padding:7px 3px 3px 3px;
+      color: white;
+      text-decoration: none;
+      font-size: 17px;
+    }
+    
+  }

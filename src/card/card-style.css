@@ -1,0 +1,22 @@
+.card{
+    display:flex;
+    justify-content:  space-around;
+    margin:20px;
+    background-color: #95dada;
+    border-style: solid;
+    border-radius: 5px;
+    border-color: goldenrod;
+    transform: translateZ(0);
+    transition:transform 0.25s ease-out;
+}
+
+.title{
+    align-self: flex-start;
+}
+.imagae{
+    align-self: flex-end;
+}
+
+.card:hover{
+    transform:scale(1.05);
+}

@@ -1,0 +1,27 @@
+.inputDiv{
+    display:flex;
+    width: 300px;
+    height: auto;
+    margin: 150px auto auto auto;
+    flex-direction: row;
+    justify-content: space-between; 
+    padding: 20px 20px;
+    /*transform: translateZ(0);
+    transition:transform 0.25s ease-out;*/
+    border: 1px solid #0000;
+    background-color: #ffff;
+    box-shadow: 0 0px 10px 2px rgb(182, 180, 180);
+    
+}
+.inputDiv button{
+
+    width:auto;
+    height:auto;
+   background-color: transparent;
+   border: none;
+   outline: none;
+}
+
+.inputDiv button:focus{
+   outline: none;
+}

@@ -1,34 +1,52 @@
 import { useParams } from 'react-router-dom';
-import {useEffect, useState} from 'react';
-import {AddIssueDialog} from '../components/AddIssueDialog';
+import { useEffect, useState } from 'react';
+import {useHistory} from 'react-router-dom';
+import { AddIssueDialog } from '../components/AddIssueDialog';
 import { Link } from 'react-router-dom';
 import './navigation-style.css'
 import { auth, firestore, storage, firebase1 } from '../firebase';
 
-const List = (props)=>{
+const List = (props) => {
 
-    return(
-       
-        <section className="row text-white rounded border border-primary" style={{marginTop:'2vh', marginLeft:'10vw', marginRight:'10vw'}}>
-        
-
-        <span className="col-9">
-            <section class="d-flex flex-column w-100  " >
-                <h6 className="left"><b>Client:-</b> {props.item.client}</h6>
-                <h6 className="left"><b>Issue:-</b> {props.item.issue}</h6>
-                <h6 className="left"><b>Solution:-</b> {props.item.solution}</h6>
-            </section>
-        </span>
-        <span className="col-3">
-            <p className="left"><b>created by:- </b> {props.item.user}</p>
-            <p className="left"><b>created on:- </b> {props.item.date}</p>
-        </span>    
-        </section>
+    let client = props.item.client;
+    client = client[0].toUpperCase() + client.substring(1);
+    let issue = props.item.issue;
+    issue = issue[0].toUpperCase() + issue.substring(1);
+    let solution = props.item.solution;
+    solution = solution[0].toUpperCase() + solution.substring(1);
+    let instrument = props.item.instrument;
+    instrument = instrument[0].toUpperCase() + instrument.substring(1);
     
+
+
+    return (
+
+        <section className="row text-white rounded border border-primary" style={{ marginTop: '2vh', marginLeft: '10vw', marginRight: '10vw' }}>
+
+            <span className="col-9">
+                <section class="d-flex flex-column" >
+                    <p className="left text-break"><b>Product Type:- </b> {props.item.product_type}</p>
+                    <p className="left text-break"><b>Client:-</b> {client}</p>
+                    <p className="left text-break"><b>Issue:-</b> {issue}</p>
+                    <p className="left text-break"><b>Solution:-</b> {solution}</p>
+                    <p className="left text-break"><b>Year:- </b> {props.item.year}</p>
+                </section>
+            </span>
+            <span className="col-3">
+                <p className="left text-break"><b>Project No.:- </b> {props.item.project_nos}</p>
+                <p className="left text-break"><b>Reference Doc No.:- </b> {props.item.ref_doc}</p>
+                <p className="left text-break"><b>Department:- </b> {props.item.dept}</p>
+                <p className="left text-break"><b>Impact:-</b> {props.item.impact}</p>
+                <p className="left text-break"><b>created by:- </b> {props.item.person}</p>
+                <p className="left text-break"><b>Instrument:-</b> {instrument}</p>
+                <p className="left text-break"><b>created on:- </b> {props.item.date}</p>
+            </span>
+        </section>
+
     )
 }
 
-export const Details =()=>{
+export const Details = () => {
 
 
     const [instrumentId, setInstrumentId] = useState(useParams().id);
@@ -36,12 +54,15 @@ export const Details =()=>{
     const [issues, setIssues] = useState([]);
     const [addIssue, openAddIssue] = useState(false);
     const [filter, setFilter] = useState(undefined);
+    const [nextPage, setNextPage] = useState(undefined);
 
-    let addIssueHandler = ()=>{
-         openAddIssue(true);
+    let history = useHistory();
+
+    let addIssueHandler = () => {
+        openAddIssue(true);
     }
 
-     let submitData = ()=>{
+    let submitData = () => {
         let client = document.getElementById('client').value;
         let issue = document.getElementById('issue').value;
         let solution = document.getElementById('solution').value;
@@ -59,124 +80,266 @@ export const Details =()=>{
 
         dbRef.update({
             issues: firebase1.firestore.FieldValue.arrayUnion({
-                'client':client,
-                'issue':issue,
-                'solution':solution,
-                'user':auth.currentUser.displayName,
+                'client': client,
+                'issue': issue,
+                'solution': solution,
+                'user': auth.currentUser.displayName,
                 'date': date
             })
-        }).then(()=>openAddIssue(false));
-     }
+        }).then(() => openAddIssue(false));
+    }
 
-    
-    let logIssueWithXls = ()=>{
+
+
+    let submitData2 = () => {
+        let client = document.getElementById('client').value;
+        let issue = document.getElementById('issue').value;
+        let solution = document.getElementById('solution').value;
+        let date = document.getElementById('date').value;
+
+        let data = {
+            'client': client.toLowerCase(),
+            'issue': issue.toLowerCase(),
+            'solution': solution.toLowerCase(),
+            'user': auth.currentUser.displayName.toLowerCase(),
+            'date': date
+        }
+
+        firestore.collection(instrumentId).add(data).then(() => openAddIssue(false));
+    }
+
+
+
+
+
+    let submitData_new = () => {
+
+        
+
+
+        
+        let client = document.getElementById('client').value;
+        let issue = document.getElementById('issue').value;
+        let solution = document.getElementById('solution').value;
+        let date = document.getElementById('date').value;
+        let instrument = document.getElementById('instrument').value;
+        let product_type = document.getElementById('product_type').value;
+        let project_nos = document.getElementById('project_nos').value;
+        let person = document.getElementById('person').value;
+        let ref_doc = document.getElementById('ref_doc').value;
+        let dept = document.getElementById('dept').value;
+        let impact = document.getElementById('impact').value;
+        let year = document.getElementById('year').value;
+
+
+        let data = {
+            'client': client.toLowerCase(),
+            'issue': issue.toLowerCase(),
+            'solution': solution.toLowerCase(),
+            'date': date,
+            'instrument':instrument.toLowerCase(),
+            'product_type':product_type,
+            'project_nos': project_nos,
+            'person':person,
+            'ref_doc':ref_doc,
+            'dept': dept,
+            'impact':impact,
+            'year':year
+
+        }
+
+        firestore.collection("_ISSUES_").add(data).then(() => openAddIssue(false));
+    }
+
+
+    let logIssueWithXls = () => {
 
     }
 
-    
-    let fetch = (filter)=>{
 
+    let fetch = (newFilter) => {
+
+        let path = history.location.pathname; 
+        let filter = undefined;
+        if(history.location.pathname.includes('instruments'))
+            filter = "instrument:"+path.substring(path.lastIndexOf('/')+1, path.length).toLowerCase();
+        else
+            filter = "client:"+path.substring(path.lastIndexOf('/')+1, path.length).toLowerCase();
+
+
+
+
+        
         setIssues([]);
         setIssuesView([])
 
 
-        console.log("here_____",filter)
-        let dbRef =  firestore.collection('Issue').doc(instrumentId);
-        let key=undefined, value=undefined;
-        if(filter !== undefined){
-            
-             key = filter.substr(0, filter.indexOf(':'));
-             value = filter.substr(filter.indexOf(':')+1);
-            console.log({key}, {value})
+        let key = undefined, value = undefined, query = undefined, dbRef = undefined;
+        let key1 = undefined, value1 = undefined;
+        if (filter !== undefined) {
+
+            key = filter.substr(0, filter.indexOf(':'));
+            value = filter.substr(filter.indexOf(':') + 1);
+            console.log({ key }, { value })
+          
+
         }
 
-        
-     dbRef.onSnapshot(snap => {
-            console.log(snap.data());
-            let data = snap.data().issues;
-            let temp = [];
-            data.forEach(item=>{
+        if (newFilter !== undefined && newFilter.trim().length > 0) {
 
-                if(key !== undefined && key!== ''){
-                    console.log({key}, {item}, item[key]);
-                    if(item[key] === value) {
-                        console.log({item})
-                        temp.push(<List item={item}/>)
-                    }
+            key1 = newFilter.substr(0, newFilter.indexOf(':'));
+            value1 = newFilter.substr(newFilter.indexOf(':') + 1);
+            console.log({ key1 }, { value1 })
+            query = key1 + ">=" + value1;
+            console.log(query);
+
+        }
+
+
+
+        //new additions :- let dbRef = firestore.collection('Issue').doc(instrumentId);
+        if (query === undefined)
+            dbRef = firestore.collection("_ISSUES_").where(key,'==',value);//.doc(instrumentId);
+        else
+            if(key1 === 'year')
+                dbRef = firestore.collection("_ISSUES_").where(key,'==',value).where(key1,'==',value1);
+            else{
+                dbRef = firestore.collection("_ISSUES_").where(key1,'==',value1).where(key,'==',value);
+
                 }
-                else{
-                    console.log({key});
-                    temp.push(<List item={item}/>)
-                }
+                
+                //.doc(instrumentId);
+        //
+
+
+
+
+
+
+        // new additions
+        console.log("DBREF= ", dbRef)
+        if (dbRef === undefined) {
+            console.log('No collection yet!');
+            return
+        }
+
+
+        dbRef.get()
+            .then((data) => {
+                let temp = [];
+                data.forEach(item => {
+
+                    item = item.data();
+                    temp.push(<List item={item} />)
+
+                });
+                setIssues(data);
+                setIssuesView([...temp])
+                console.log(data)
+            })
+            .catch((error) => {
+                console.log("Error getting documents: ", error);
             });
-           setIssues(data);
-           setIssuesView([...temp])
-           console.log(data)
-          });
+
+
+        //
+
+        // dbRef.onSnapshot(snap => {
+
+        //     console.log("snap", snap)
+        //     console.log(snap.docs);
+        //     let data = snap.docs;
+        //     let temp = [];
+        //     data.forEach(item => {
+
+        //         item = item.data();
+        //         if (key !== undefined && key !== '') {
+
+        //             key = key.toLowerCase();
+        //             value = value.toLowerCase();
+
+        //             let realValue = (item[key]).toLowerCase();
+
+
+        //             console.log({ key }, { realValue }, { value });
+
+        //             if (realValue.includes(value)) {
+        //                 console.log({ item })
+        //                 temp.push(<List item={item} />)
+        //             }
+        //         }
+        //         else {
+        //             console.log({ key });
+        //             temp.push(<List item={item} />)
+        //         }
+        //     });
+        //     setIssues(data);
+        //     setIssuesView([...temp])
+        //     console.log(data)
+        // });
     }
 
-    let fetchWithFilter = ()=>{
+    let fetchWithFilter = () => {
         let filter = document.getElementById('filter').value;
         setFilter(filter);
-        
+
     }
 
-  
 
-    useEffect(()=>{
+
+    useEffect(() => {
 
         console.log('current user = ', auth.currentUser.displayName)
         let unsubscribe = fetch(filter);
 
-       // return unsubscribe();
+        // return unsubscribe();
 
-      
+
 
     }, [filter])
 
 
-    return addIssue === true ? (<AddIssueDialog onClose={()=>{console.log("closing"); openAddIssue(false)}}
-        onSubmit={()=>{submitData()}}
-    />): (
-         <section className="h-100 bg-dark">
+    return addIssue === true ? (<AddIssueDialog onClose={() => { console.log("closing"); openAddIssue(false) }}
+        onSubmit={() => { submitData_new() }}
+    />) : (
+        <section className="h-100 bg-dark">
 
-            <nav class="navbar fixed-top navbar-dark" style={{ height: '10vh', padding: '0',backgroundColor:'#212121' }}>
+            <nav class="navbar fixed-top navbar-dark" style={{ height: '10vh', padding: '0', backgroundColor: '#212121' }}>
                 <div class="d-flex justify-content-end w-100 mt-2 mb-2">
-                    
+
                     <span className="d-flex">
-                        <input className="rounded broder broder-secondary" placeholder="filter" id='filter'/>
-                        <span className="btn text-white" onClick={(event)=>{fetchWithFilter()}}>
+                        <input className="rounded broder broder-secondary" placeholder="filter" id='filter' />
+                        <span className="btn text-white" onClick={(event) => { fetchWithFilter() }}>
                             Search
                         </span>
                     </span>
 
-                   
-                        <span className="btn text-white" onClick={(event)=>{addIssueHandler()}}>
+                    <span id="home" className="btn text-white" href="#">
+                        <Link to='/'>Home</Link>
+                    </span>
+                    <span className="btn text-white" onClick={(event) => { addIssueHandler() }}>
                         Create New Issue
-                        </span>
-                        <span className="btn text-white" onClick={(event)=>{logIssueWithXls()}}>
-                        Log issue from Execel
-                        </span>
-                        <span id="logout" className="btn text-white" onClick={(event) => auth.signOut()} href="#">
-                            <Link to='/'>Logout</Link>
-                        </span>
-                   
+                    </span>
+                    <span id="logout" className="btn text-white" onClick={(event) => auth.signOut()} href="#">
+                        <Link to='/'>Logout</Link>
+                    </span>
 
-                   
+
+
 
 
                 </div>
-               
+
 
             </nav>
 
-            <section style={{marginTop:'10vh'}}>
-            {
-                issuesView
-            }
+            <section style={{ marginTop: '10vh' }}>
+                {
+                    issuesView
+                }
             </section>
 
-           
+
         </section>
     )
 

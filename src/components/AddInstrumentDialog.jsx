@@ -6,7 +6,7 @@ export const AddInstrumentDialog = (props) => {
     return <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">ADD NEW INSTRUMENT</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">{props.title}</h5>
                 <span type="button" class="btn" aria-label="Close" onClick={() => props.onClose()}>
                     <span aria-hidden="true">&times;</span>
                 </span>
@@ -15,7 +15,7 @@ export const AddInstrumentDialog = (props) => {
                 <div class="d-flex flex-column">
 
                 <div class="input-group">
-                    <input placeholder="INSTURMENT NAME" id="instrumentname"/>
+                    <input placeholder={props.title} id="instrumentname"/>
                 </div>
 
                     <div class="d-flex flex-row mt-2">

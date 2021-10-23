@@ -16,7 +16,9 @@ import * as Routes from "./constants";
 
 import {LoginCard} from './card/loginCard';
 import {SignUpCard} from './card/signUpCard';
-import {Dashboard} from "./mylayout/dashboard";
+import {Instruments} from "./mylayout/Instruments";
+import {Clients} from "./mylayout/clientList";
+import {LandingPage} from "./mylayout/LandingPage";
 import {Details} from "./mylayout/Details";
 import {StaticNav} from './mylayout/navigation';
 import { auth } from "./firebase";
@@ -74,8 +76,11 @@ class App extends Component {
     <div className="App" style={{height:'100%', isplay: 'flex', flexDirection:'column',justifyContent: 'center'}}>
       <Switch>
         
-        <PrivateRoute exact path="/dashboard/:id" authed ={this.state.authed} component={()=><Details state={this.state}/>}/>
-        <PrivateRoute exact path={Routes.dashboard} authed ={this.state.authed} component={()=><Dashboard state={this.state}/>}/>
+        <PrivateRoute exact path="/instruments/:id" authed ={this.state.authed} component={()=><Details state={this.state}/>}/>
+        <PrivateRoute exact path="/clients/:id" authed ={this.state.authed} component={()=><Details state={this.state}/>}/>
+        <PrivateRoute exact path={Routes.dashboard} authed ={this.state.authed} component={()=><LandingPage state={this.state}/>}/>
+        <PrivateRoute exact path={Routes.instruments} authed ={this.state.authed} component={()=><Instruments state={this.state}/>}/>
+        <PrivateRoute exact path={Routes.clients} authed ={this.state.authed} component={()=><Clients state={this.state}/>}/>
         
         <PublicRoute path={Routes.signin} authed ={this.state.authed} component={SignUpCard}/>
         

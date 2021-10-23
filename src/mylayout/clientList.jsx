@@ -7,7 +7,7 @@ import { auth, firestore, storage } from '../firebase';
 import { useHistory } from 'react-router-dom';
 import {Gallery} from './Gallery';
 
-export const Dashboard = (props) => {
+export const Clients = (props) => {
 
     const [addInstrument, openAddInstrument] = useState(false);
     const [items, setItems] = useState([])
@@ -75,10 +75,10 @@ export const Dashboard = (props) => {
             .then( url => {
                 console.log(url);
             let instrumentName = document.getElementById('instrumentname').value;
-                firestore.collection('Instruments_').doc(instrumentName+"__").set({'name':instrumentName,'url':url})
-                .then(
-                    firestore.collection('Issue').doc(instrumentName+"__").set({'issues':[]}).then(  ()=>openAddInstrument(false)))
-                  
+                firestore.collection('Clients_').doc(instrumentName).set({'name':instrumentName,'url':url})
+                .then(()=>{
+                    openAddInstrument(false)
+                })     
             });
         })
     }
@@ -93,7 +93,7 @@ export const Dashboard = (props) => {
     let fetchItem = ()=>{
         console.log("fetching item")
        
-       return  firestore.collection('Instruments_')
+       return  firestore.collection('Clients_')
         .onSnapshot(snap => {
             const data = snap.docs.map(doc => ({'id':doc.id, ...doc.data()}));
             console.log("data = ", data)
@@ -106,7 +106,7 @@ export const Dashboard = (props) => {
 
     }
     
-    return addInstrument === true ? (<AddInstrumentDialog onClose={()=>{console.log("closing"); openAddInstrument(false)}}
+    return addInstrument === true ? (<AddInstrumentDialog title={"ADD NEW CLIENT"} onClose={()=>{console.log("closing"); openAddInstrument(false)}}
         onSubmit={()=>{submitData()}}
     />) : (
 
@@ -115,12 +115,18 @@ export const Dashboard = (props) => {
             <nav class="navbar fixed-top navbar-dark" style={{ height: '10vh', padding: '0',backgroundColor:'#212121' }}>
                 <div class="d-flex justify-content-end w-100 mt-2 mb-2">
 
+                <span id="home" className="btn text-white" href="#">
+                        <Link to='/'>Home</Link>
+                </span>
+                
                 <span className="btn text-white" onClick={(event)=>{addInstrumentHandler()}}>
-                       Add instrument
+                       Add Client
                     </span>
                     <span id="logout" className="btn text-white" onClick={(event) => auth.signOut()} href="#">
                         <Link to='/'>Logout</Link>
                     </span>
+
+                   
 
                     
 
@@ -130,7 +136,7 @@ export const Dashboard = (props) => {
 
             </nav>
 
-            <Gallery items={items}/>
+            <Gallery type='clients' items={items}/>
 
            
         </section>

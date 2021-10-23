@@ -4,6 +4,8 @@ import { useHistory } from 'react-router-dom';
 export const Gallery=(props)=>{
 
     const [itemsView, setItemView] = useState([]);
+    const [forceRerender, setRender] =useState(true);
+    
 
     let history = useHistory();
 
@@ -28,9 +30,9 @@ export const Gallery=(props)=>{
                     console.log(url)
 
             temp.push(
-                <section className="rounded border border-primary d-flex flex-column justify-content-center text-center mx-3" style={{width:'250px'}}>
-                    <img src={url} style={{width:'200px', height:'200px'}} onClick={()=>history.push(`/dashboard/${item.id}`)}/>
-                    <p className="text-dark">{item.name}</p>
+                <section className="rounded border border-primary d-flex flex-column justify-content-center text-center mx-3" style={{width:'200px', height:'210px'}}>
+                    <img src={url} style={{width:'200px', height:'200px'}} onClick={()=>history.push(`/${props.type}/${item.id}`)}/>
+                    <p className="text-white">{item.name}</p>
                 </section>
             );
 
@@ -44,11 +46,16 @@ export const Gallery=(props)=>{
         });
 
        
-    },[]);
+    },[props.items]);
 
     useEffect(()=>{
         console.log("item view = ", itemsView)
+        setRender(prev => !prev);
     },[itemsView])
+
+    useEffect(()=>{
+        console.log(" render = ", forceRerender)
+    },[forceRerender])
   
 
 

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {AddInstrumentDialog} from '../components/AddInstrumentDialog';
+import {AdditemDialog} from '../components/AddInstrumentDialog';
 import { Link } from 'react-router-dom';
 import './navigation-style.css'
 import { auth, firestore, storage } from '../firebase';
@@ -7,9 +7,9 @@ import { auth, firestore, storage } from '../firebase';
 import { useHistory } from 'react-router-dom';
 import {Gallery} from './Gallery';
 
-export const Instruments = (props) => {
+export const Items = (props) => {
 
-    const [addInstrument, openAddInstrument] = useState(false);
+    const [additem, openAdditem] = useState(false);
     const [items, setItems] = useState([])
     const [forceRerender, setRender] =useState(true);
 
@@ -24,8 +24,8 @@ export const Instruments = (props) => {
 
 
 
-    let addInstrumentHandler = ()=>{
-        openAddInstrument(true);
+    let additemHandler = ()=>{
+        openAdditem(true);
         console.log("done")
     }
 
@@ -41,7 +41,7 @@ export const Instruments = (props) => {
 
 
         let imageName = image.name//image.substr(image.lastIndexOf('\\')+1, image.length);
-        let instrumentName = document.getElementById('instrumentname').value;
+        let itemName = document.getElementById('itemname').value;
 
         
         // const u = new URL(`file:///${image}`).href;
@@ -51,33 +51,33 @@ export const Instruments = (props) => {
         //     return response.blob();
         // })
         // .then(blob => {
-        //     const storageRef = storage.ref().child(instrumentName+"_"+imageName);
+        //     const storageRef = storage.ref().child(itemName+"_"+imageName);
         //     storageRef.put(blob).then(snapshot => {
         //         storage
-        //     .ref(instrumentName+"_"+imageName)
+        //     .ref(itemName+"_"+imageName)
         //     .getDownloadURL()
         //     .then( url => {
         //         console.log(url);
-        //     let instrumentName = document.getElementById('instrumentname').value;
-        //         firestore.collection('Instruments').doc(instrumentName+"__").set({'name':instrumentName,'url':url})
+        //     let itemName = document.getElementById('itemname').value;
+        //         firestore.collection('items').doc(itemName+"__").set({'name':itemName,'url':url})
         //         .then(
-        //             firestore.collection('Issue').doc(instrumentName+"__").set({'issues':[]}).then(  ()=>openAddInstrument(false)))
+        //             firestore.collection('Issue').doc(itemName+"__").set({'issues':[]}).then(  ()=>openAdditem(false)))
                   
         //     });
         //     });
         // });
     
 
-        storage.ref().child(instrumentName+"_"+image.name).put(image, {contentType:'image/jpeg'}).then(()=>{
+        storage.ref().child(itemName+"_"+image.name).put(image, {contentType:'image/jpeg'}).then(()=>{
             storage
-            .ref(instrumentName+"_"+imageName)
+            .ref(itemName+"_"+imageName)
             .getDownloadURL()
             .then( url => {
                 console.log(url);
-            let instrumentName = document.getElementById('instrumentname').value;
-                firestore.collection('Instruments_').doc(instrumentName).set({'name':instrumentName,'url':url})
+            let itemName = document.getElementById('itemname').value;
+                firestore.collection('items_').doc(itemName).set({'name':itemName,'url':url})
                 .then(
-                    firestore.collection('Issue').doc(instrumentName).set({'issues':[]}).then(  ()=>openAddInstrument(false)))
+                    firestore.collection('Issue').doc(itemName).set({'issues':[]}).then(  ()=>openAdditem(false)))
                   
             });
         })
@@ -93,7 +93,7 @@ export const Instruments = (props) => {
     let fetchItem = ()=>{
         console.log("fetching item")
        
-       return  firestore.collection('Instruments_')
+       return  firestore.collection('items_')
         .onSnapshot(snap => {
             const data = snap.docs.map(doc => ({'id':doc.id, ...doc.data()}));
             console.log("data = ", data)
@@ -106,7 +106,7 @@ export const Instruments = (props) => {
 
     }
     
-    return addInstrument === true ? (<AddInstrumentDialog title={"ADD NEW INSTRUMENT"} onClose={()=>{console.log("closing"); openAddInstrument(false)}}
+    return additem === true ? (<AdditemDialog title={"ADD NEW item"} onClose={()=>{console.log("closing"); openAdditem(false)}}
         onSubmit={()=>{submitData()}}
     />) : (
 
@@ -119,8 +119,8 @@ export const Instruments = (props) => {
                         <Link to='/'>Home</Link>
                 </span>
                 
-                <span className="btn text-white" onClick={(event)=>{addInstrumentHandler()}}>
-                       Add instrument
+                <span className="btn text-white" onClick={(event)=>{additemHandler()}}>
+                       Add Item
                     </span>
                     <span id="logout" className="btn text-white" onClick={(event) => auth.signOut()} href="#">
                         <Link to='/'>Logout</Link>
@@ -136,7 +136,7 @@ export const Instruments = (props) => {
 
             </nav>
 
-            <Gallery type='instruments' items={items}/>
+            <Gallery type='items' items={items}/>
 
            
         </section>

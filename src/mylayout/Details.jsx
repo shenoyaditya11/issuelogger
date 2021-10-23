@@ -14,8 +14,8 @@ const List = (props) => {
     issue = issue[0].toUpperCase() + issue.substring(1);
     let solution = props.item.solution;
     solution = solution[0].toUpperCase() + solution.substring(1);
-    let instrument = props.item.instrument;
-    instrument = instrument[0].toUpperCase() + instrument.substring(1);
+    let item = props.item.item;
+    item = item[0].toUpperCase() + item.substring(1);
     
 
 
@@ -38,7 +38,7 @@ const List = (props) => {
                 <p className="left text-break"><b>Department:- </b> {props.item.dept}</p>
                 <p className="left text-break"><b>Impact:-</b> {props.item.impact}</p>
                 <p className="left text-break"><b>created by:- </b> {props.item.person}</p>
-                <p className="left text-break"><b>Instrument:-</b> {instrument}</p>
+                <p className="left text-break"><b>item:-</b> {item}</p>
                 <p className="left text-break"><b>created on:- </b> {props.item.date}</p>
             </span>
         </section>
@@ -49,7 +49,7 @@ const List = (props) => {
 export const Details = () => {
 
 
-    const [instrumentId, setInstrumentId] = useState(useParams().id);
+    const [itemId, setitemId] = useState(useParams().id);
     const [issuesView, setIssuesView] = useState([]);
     const [issues, setIssues] = useState([]);
     const [addIssue, openAddIssue] = useState(false);
@@ -76,7 +76,7 @@ export const Details = () => {
         //     'solution':solution
         // });
 
-        let dbRef = firestore.collection('Issue').doc(instrumentId); //.set({'issues':newIssue}).then(()=>openAddIssue(false));
+        let dbRef = firestore.collection('Issue').doc(itemId); //.set({'issues':newIssue}).then(()=>openAddIssue(false));
 
         dbRef.update({
             issues: firebase1.firestore.FieldValue.arrayUnion({
@@ -105,7 +105,7 @@ export const Details = () => {
             'date': date
         }
 
-        firestore.collection(instrumentId).add(data).then(() => openAddIssue(false));
+        firestore.collection(itemId).add(data).then(() => openAddIssue(false));
     }
 
 
@@ -122,7 +122,7 @@ export const Details = () => {
         let issue = document.getElementById('issue').value;
         let solution = document.getElementById('solution').value;
         let date = document.getElementById('date').value;
-        let instrument = document.getElementById('instrument').value;
+        let item = document.getElementById('item').value;
         let product_type = document.getElementById('product_type').value;
         let project_nos = document.getElementById('project_nos').value;
         let person = document.getElementById('person').value;
@@ -137,7 +137,7 @@ export const Details = () => {
             'issue': issue.toLowerCase(),
             'solution': solution.toLowerCase(),
             'date': date,
-            'instrument':instrument.toLowerCase(),
+            'item':item.toLowerCase(),
             'product_type':product_type,
             'project_nos': project_nos,
             'person':person,
@@ -161,8 +161,8 @@ export const Details = () => {
 
         let path = history.location.pathname; 
         let filter = undefined;
-        if(history.location.pathname.includes('instruments'))
-            filter = "instrument:"+path.substring(path.lastIndexOf('/')+1, path.length).toLowerCase();
+        if(history.location.pathname.includes('items'))
+            filter = "item:"+path.substring(path.lastIndexOf('/')+1, path.length).toLowerCase();
         else
             filter = "client:"+path.substring(path.lastIndexOf('/')+1, path.length).toLowerCase();
 
@@ -197,9 +197,9 @@ export const Details = () => {
 
 
 
-        //new additions :- let dbRef = firestore.collection('Issue').doc(instrumentId);
+        //new additions :- let dbRef = firestore.collection('Issue').doc(itemId);
         if (query === undefined)
-            dbRef = firestore.collection("_ISSUES_").where(key,'==',value);//.doc(instrumentId);
+            dbRef = firestore.collection("_ISSUES_").where(key,'==',value);//.doc(itemId);
         else
             if(key1 === 'year')
                 dbRef = firestore.collection("_ISSUES_").where(key,'==',value).where(key1,'==',value1);
@@ -208,7 +208,7 @@ export const Details = () => {
 
                 }
                 
-                //.doc(instrumentId);
+                //.doc(itemId);
         //
 
 

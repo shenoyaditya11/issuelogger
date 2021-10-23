@@ -1,4 +1,4 @@
-export const AddInstrumentDialog = (props) => {
+export const AdditemDialog = (props) => {
 
 
 
@@ -15,11 +15,11 @@ export const AddInstrumentDialog = (props) => {
                 <div class="d-flex flex-column">
 
                 <div class="input-group">
-                    <input placeholder={props.title} id="instrumentname"/>
+                    <input placeholder={props.title} id="itemname"/>
                 </div>
 
                     <div class="d-flex flex-row mt-2">
-                        <input type="file" id="inputGroupFile02" placeholder="Instrument Image"/>
+                        <input type="file" id="inputGroupFile02" placeholder="item Image"/>
                     </div>
                 </div>
 

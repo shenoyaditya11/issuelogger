@@ -9,13 +9,23 @@ import { auth, firestore, storage, firebase1 } from '../firebase';
 const List = (props) => {
 
     let client = props.item.client;
-    client = client[0].toUpperCase() + client.substring(1);
+    
     let issue = props.item.issue;
     issue = issue[0].toUpperCase() + issue.substring(1);
     let solution = props.item.solution;
-    solution = solution[0].toUpperCase() + solution.substring(1);
+   
     let item = props.item.item;
+
+    try{
     item = item[0].toUpperCase() + item.substring(1);
+    solution = solution[0].toUpperCase() + solution.substring(1);
+    client = client.toUpperCase();
+    }catch(exception){
+
+    }
+
+
+  
     
 
 
@@ -27,8 +37,12 @@ const List = (props) => {
                 <section class="d-flex flex-column" >
                     <p className="left text-break"><b>Product Type:- </b> {props.item.product_type}</p>
                     <p className="left text-break"><b>Client:-</b> {client}</p>
+                    <p className="left text-break"><b>Impact Category:-</b> {props.item.impact_category}</p>
+                    <p className="left text-break"><b>Impact:-</b> {props.item.impact}</p>
                     <p className="left text-break"><b>Issue:-</b> {issue}</p>
                     <p className="left text-break"><b>Solution:-</b> {solution}</p>
+                    <p className="left text-break"><b>Preventive Action:-</b> {props.item.preventive_action}</p>
+                    <p className="left text-break"><b>Remarks:-</b> {props.item.remarks}</p>
                     <p className="left text-break"><b>Year:- </b> {props.item.year}</p>
                 </section>
             </span>
@@ -36,10 +50,11 @@ const List = (props) => {
                 <p className="left text-break"><b>Project No.:- </b> {props.item.project_nos}</p>
                 <p className="left text-break"><b>Reference Doc No.:- </b> {props.item.ref_doc}</p>
                 <p className="left text-break"><b>Department:- </b> {props.item.dept}</p>
-                <p className="left text-break"><b>Impact:-</b> {props.item.impact}</p>
+                <p className="left text-break"><b>Response Category:- </b> {props.item.response_category}</p>
                 <p className="left text-break"><b>created by:- </b> {props.item.person}</p>
                 <p className="left text-break"><b>item:-</b> {item}</p>
                 <p className="left text-break"><b>created on:- </b> {props.item.date}</p>
+                <p className="left text-break"><b>Corrective Action Date:- </b> {props.item.corrective_action_date}</p>
             </span>
         </section>
 
@@ -114,8 +129,9 @@ export const Details = () => {
 
     let submitData_new = () => {
 
-        
 
+       
+       
 
         
         let client = document.getElementById('client').value;
@@ -130,6 +146,11 @@ export const Details = () => {
         let dept = document.getElementById('dept').value;
         let impact = document.getElementById('impact').value;
         let year = document.getElementById('year').value;
+        let preventive_action =  document.getElementById('preventive_action').value;
+        let impact_category =  document.getElementById('impact_category').value;
+        let response_category =  document.getElementById('response_category').value;
+        let corrective_action_date =  document.getElementById('corrective_action_date').value;
+        let remarks =  document.getElementById('remarks').value;
 
 
         let data = {
@@ -144,7 +165,13 @@ export const Details = () => {
             'ref_doc':ref_doc,
             'dept': dept,
             'impact':impact,
-            'year':year
+            'year':year,
+            'preventive_action':preventive_action,
+            'impact_category':impact_category,
+            'response_category': response_category,
+            'corrective_action_date':corrective_action_date,
+            'remarks':remarks
+
 
         }
 
@@ -187,6 +214,7 @@ export const Details = () => {
 
         if (newFilter !== undefined && newFilter.trim().length > 0) {
 
+            newFilter = newFilter.toLowerCase();
             key1 = newFilter.substr(0, newFilter.indexOf(':'));
             value1 = newFilter.substr(newFilter.indexOf(':') + 1);
             console.log({ key1 }, { value1 })
@@ -198,13 +226,20 @@ export const Details = () => {
 
 
         //new additions :- let dbRef = firestore.collection('Issue').doc(itemId);
+        let symbol = "==";
+        
+        if(value.indexOf("general")!=-1){
+            console.log("this is general!!");
+            symbol = ">=";
+            console.log("this is symbol !!", symbol);
+        }
         if (query === undefined)
-            dbRef = firestore.collection("_ISSUES_").where(key,'==',value);//.doc(itemId);
+            dbRef = firestore.collection("_ISSUES_").where(key,symbol,value);//.doc(itemId);
         else
             if(key1 === 'year')
-                dbRef = firestore.collection("_ISSUES_").where(key,'==',value).where(key1,'==',value1);
+                dbRef = firestore.collection("_ISSUES_").where(key,symbol,value).where(key1,'==',value1);
             else{
-                dbRef = firestore.collection("_ISSUES_").where(key1,'==',value1).where(key,'==',value);
+                dbRef = firestore.collection("_ISSUES_").where(key1,'==',value1).where(key,symbol,value);
 
                 }
                 
@@ -307,6 +342,8 @@ export const Details = () => {
             <nav class="navbar fixed-top navbar-dark" style={{ height: '10vh', padding: '0', backgroundColor: '#212121' }}>
                 <div class="d-flex justify-content-end w-100 mt-2 mb-2">
 
+              
+
                     <span className="d-flex">
                         <input className="rounded broder broder-secondary" placeholder="filter" id='filter' />
                         <span className="btn text-white" onClick={(event) => { fetchWithFilter() }}>
@@ -334,6 +371,7 @@ export const Details = () => {
             </nav>
 
             <section style={{ marginTop: '10vh' }}>
+            
                 {
                     issuesView
                 }

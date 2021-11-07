@@ -377,6 +377,7 @@ export const Details = () => {
 
             <section style={{ marginTop: '10vh' }}>
             
+                <div><p className="text-white"> Total Issues: - {issuesView.length}</p></div>
                 {
                     issuesView
                 }

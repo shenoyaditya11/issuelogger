@@ -265,7 +265,12 @@ export const Details = () => {
                 data.forEach(item => {
 
                     item = item.data();
-                    temp.push(<List item={item} />)
+                    if(value==='general'){
+                        if(item.client.indexOf('general')!=-1)
+                            temp.push(<List item={item} />)
+                    }else{
+                        temp.push(<List item={item} />)
+                    }
 
                 });
                 setIssues(data);

@@ -97,6 +97,12 @@ export const Clients = (props) => {
         .onSnapshot(snap => {
             const data = snap.docs.map(doc => ({'id':doc.id, ...doc.data()}));
             console.log("data = ", data)
+            data.sort(function(a,b){
+                return a.name - b.name;
+                }
+            );
+
+            console.log("sorted data = ", data)
             setItems(prevItem => ([...data]));
            
           });
